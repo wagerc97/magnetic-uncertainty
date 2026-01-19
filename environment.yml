@@ -1,5 +1,5 @@
 # Usage: micromamba env create -f environment.yml
-name: maglearn
+name: paper-magnetic-uncertainty
 channels:
   - conda-forge
   - anaconda
