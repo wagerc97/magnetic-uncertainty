@@ -1,5 +1,4 @@
 # Usage: micromamba env create -f environment.yml
-# used to run the main.py
 name: maglearn
 channels:
   - conda-forge
