@@ -15,6 +15,7 @@ dependencies:
   - plotly==6.1.0
   - scipy==1.15.3
   - seaborn
+  - notebook
   - pip
   - pip:
     - jax==0.6.0
