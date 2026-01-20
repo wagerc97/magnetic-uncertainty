@@ -15,5 +15,6 @@ micromamba env create -f environment.yml
 ```
 
 
-
 ## Usage 
+Use the corresponding jupyter notebook to train and evaluate the models. 
+Results will be saved in the `models` folder at the project root under a timestamped directory. 
