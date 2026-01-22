@@ -6,7 +6,7 @@ This repository contains the source code to define the machine learning models t
 
 The datasets that were either generated or analyzed for intrinsic material property prediction are considered proprietary information and are the intellectual property of TOYOTA Motor Company. 
 
-The source code and train dataset for the graph neural network models predicting coercivity $\mu_0H_\mathrm{c}$ (T) can be found in the GitHub repository [heisammoustafa/Micromagnetic_GNN](https://github.com/heisammoustafa/Micromagnetic_GNN). 
+The source code and train dataset for the graph neural network models predicting coercivity $\mu_0H_\mathrm{c}$ (T) can be found in the GitHub repository [heisammoustafa/GNN_Uncertainty](https://github.com/heisammoustafa/GNN_Uncertainty). 
 
 
 ## Environment 
@@ -17,5 +17,5 @@ micromamba env create -f environment.yml
 
 
 ## Usage 
-Use the corresponding jupyter notebook to train and evaluate the models. 
-Results will be saved in the `models` folder at the project root under a timestamped directory. 
+Use the corresponding jupyter notebook under `src/` to train and evaluate the models. 
+Results will be saved in the `models/` folder at the project root under a timestamped directory. 
