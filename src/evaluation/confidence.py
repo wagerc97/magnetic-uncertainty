@@ -141,6 +141,7 @@ def _compute_confidences(
 
     plt.xlabel('% discarded samples')
     plt.xlim([-4, 104])
+    plt.ylim([y_max * -0.05, y_max * 1.4])
 
     plt.tight_layout()
     filepath = output_dir / f'{plot_name}.png'
