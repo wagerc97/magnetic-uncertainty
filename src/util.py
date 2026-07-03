@@ -10,10 +10,8 @@ pd.set_option('display.max_columns', None)
 # ======================================[ Constants ]===============================================
 
 BASE_PATH = Path(__file__).parent.parent
-DATA_PATH = (BASE_PATH / "data").absolute()
 MODEL_PATH = (BASE_PATH / "models").absolute()
 print(f"BASE_PATH: {BASE_PATH}")
-print(f"DATA_PATH: {DATA_PATH}")
 print(f"MODEL_PATH: {MODEL_PATH}")
 
 

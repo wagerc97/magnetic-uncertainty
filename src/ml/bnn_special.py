@@ -5,7 +5,7 @@ Special BNN models for certain projects
 import os
 os.environ["KERAS_BACKEND"] = "jax"     # order matters !
 
-from keras.src.layers import Input, Dense, Dropout
+from keras.layers import Input, Dense, Dropout
 from keras import optimizers
 from keras import Sequential
 

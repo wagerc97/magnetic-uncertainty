@@ -13,7 +13,7 @@ def save_plot(filename: str, dir_name: str=None):
     filepath = dir_name / filename
     if not dir_name.exists():
         raise FileNotFoundError(f"Save directory {dir_name} does not exist.")
-    plt.savefig(filepath, dpi=300, bbox_inches='tight')  # bbox_inches='tight' to avoid clipping
+    plt.savefig(filepath, dpi=600, bbox_inches='tight')  # bbox_inches='tight' to avoid clipping
     print(f"Saved to dir: {dir_name}")
 
 

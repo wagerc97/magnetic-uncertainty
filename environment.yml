@@ -1,5 +1,5 @@
 # Usage: micromamba env create -f environment.yml
-name: paper-magnetic-uncertainty
+name: pub-mag-unc
 channels:
   - conda-forge
   - anaconda
@@ -16,6 +16,10 @@ dependencies:
   - scipy==1.15.3
   - seaborn
   - notebook
+  - gpytorch
+  - torch-geometric
+  - pyyaml
   - pip
   - pip:
     - jax==0.6.0
+    - uncertainty-toolbox

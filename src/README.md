@@ -1,13 +1,19 @@
-# Source Code
+# Source code
 
-This folder contains the core Python modules and training notebooks for the magnetic-uncertainty project. 
+This folder contains the reusable Python modules used by the scripts in [../scripts](../scripts).
+
+Most users do not need to run files in `src/` directly. In normal use, run the scripts from the repository root and let them import these modules automatically.
 
 ## Layout
-- `evaluation/`: plotting and evaluation utilities (confidence curves, residual plots, validation helpers).
-- `ml/`: machine-learning models, including approximate Bayesian neural network implementations.
-- `util.py`: shared paths, preprocessing helpers, and data-loading utilities.
-- `train_model_*.ipynb`: notebooks for training models for anisotropy field $\mu_0H_\mathrm{a}$ (T) and spontaneous magnetization $\mu_0M_\mathrm{s}$ (T) targets.
+
+- `ml/`: machine-learning models, including approximate Bayesian neural-network code
+- `evaluation/`: plotting and uncertainty-evaluation utilities
+- `util.py`: shared data-loading, preprocessing, timestamp, and output-folder helpers
+- `notebook2pdf.py`: utility script for notebook export
 
 ## Notes
-- Model artifacts are written under `models/` at the repository root; `util.py` creates the folder and adds a `.gitignore` if needed.
-- Datasets are expected under `data/` at the repository root.
+
+- Some helper code automatically creates a top-level `models/` folder if it does not exist yet.
+- The Curie-temperature scripts use data from `data/curie/`.
+- The `Ha` and `Ms` workflows expect additional proprietary data under `data/tmc/`, which is not included in this repository.
+- The `Hc` workflow imports code from the `GNN_Uncertainty` submodule.

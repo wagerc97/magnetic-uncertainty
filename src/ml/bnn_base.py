@@ -10,7 +10,6 @@ Sources:
 """
 
 import os
-from tabnanny import verbose
 os.environ["KERAS_BACKEND"] = "jax"     # order matters !
 import keras
 
@@ -27,7 +26,7 @@ from sklearn.model_selection import KFold
 from sklearn.exceptions import NotFittedError
 from sklearn.base import RegressorMixin, BaseEstimator
 
-from keras.src.layers import Dropout
+from keras.layers import Dropout
 from keras import Sequential
 from keras import ops
 
@@ -119,7 +118,12 @@ class BnnBase(RegressorMixin, BaseEstimator, ABC):
         def capture_summary(model: Sequential) -> str:
             buffer = io.StringIO()
             print("*" * 76, file=buffer)
-            model.summary(print_fn=lambda x: buffer.write(x + "\n"))
+            def _capture_line(text, line_break=True, **_kwargs):
+                buffer.write(text)
+                if line_break:
+                    buffer.write("\n")
+
+            model.summary(print_fn=_capture_line)
             return buffer.getvalue()
 
         # Capture the model's summary
@@ -304,6 +308,59 @@ class BnnBase(RegressorMixin, BaseEstimator, ABC):
         return self.history
 
 
+    def fit_validate(self, X, Y, validation_split: float = 0.2, patience: int = 20) -> keras.callbacks.History:
+        """
+        PHASE 1 MODEL FIT FOR HYPERPARAMETER TUNING / EPOCH OPTIMIZATION
+
+        ---
+        Fit the model with a validation split and early stopping to find the optimal number of epochs.
+        
+        :param X: Training input data.
+        :param Y: Training target data.
+        :param validation_split: Fraction of the training data to be used as validation data.
+        :param patience: Number of epochs with no improvement after which training will be stopped.
+        :return: Training history.
+        """
+        if self.is_fitted:
+            raise UserWarning("This model is already fitted!")
+        start_time = time.time()
+        print(f"Fitting (with validation) started at: {time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(start_time))}")
+
+        n_data_features = np.asarray(X).shape[1]
+        assert n_data_features == self.n_features, f"n_features ({self.n_features}) does not match number of features in train data dimensions ({n_data_features})!"
+
+        early_stopping = keras.callbacks.EarlyStopping(
+            monitor='val_loss',
+            patience=patience,
+            restore_best_weights=True,
+            verbose=1
+        )
+
+        fit_kwargs = self._get_fit_kwargs() or {}
+        self.history = self.model.fit(
+            X,
+            Y,
+            batch_size=32,
+            epochs=self.epochs,
+            validation_split=validation_split,
+            callbacks=[early_stopping],
+            verbose=0,
+            **fit_kwargs,
+        )
+        self.is_fitted = True
+
+        # Log the optimal number of epochs
+        if hasattr(self.history, 'epoch') and len(self.history.epoch) > 0:
+            best_epoch = len(self.history.epoch) - patience
+            print(f"Early stopping triggered. Total epochs run: {len(self.history.epoch)}. Best epoch approx: {best_epoch}")
+
+        end_time = time.time()
+        print(f"Fitting finished at: {time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(end_time))}")
+        print(f"Total fitting time of {self.__class__.__name__}.{self.model_name}: {end_time - start_time:.2f} seconds")
+        print(f"-"*70)
+        return self.history
+
+
     def predict(self, X) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
         """
         An array (mu, si) is returned. Thus, the prediction describes a distribution instead af a deterministic value.
@@ -342,17 +399,6 @@ class BnnBase(RegressorMixin, BaseEstimator, ABC):
         std_aleatoric = np.sqrt(var_al)
         std_epistemic = np.sqrt(var_ep)
         return y_mean, std_total, std_aleatoric, std_epistemic
-
-
-    def predict_rel_std(self, X) -> tuple[np.ndarray, np.ndarray]:
-        """
-        Call predict and return only mean and standard deviation scaled by mean.
-
-        :param X:
-        :return: (mean, std/mean)
-        """
-        y_mean, y_std, _, _ = self.predict(X)
-        return y_mean, (y_std / y_mean)
 
 
     @classmethod

@@ -1,0 +1,4 @@
+[submodule "GNN_Uncertainty"]
+	path = GNN_Uncertainty
+	url = https://github.com/heisammoustafa/GNN_Uncertainty.git
+	branch = main
