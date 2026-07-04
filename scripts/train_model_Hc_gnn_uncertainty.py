@@ -430,6 +430,7 @@ def main():
 
     print(f"[*] evaluating GNN across {len(EVAL_SEEDS)} random seeds ...")
     for seed in EVAL_SEEDS:
+        print(f"[*] evaluating seed {seed} ...")
         seed_rows, artifacts = evaluate_split(
             dataset=dataset,
             config=CONFIG,

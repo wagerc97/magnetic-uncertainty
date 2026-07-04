@@ -375,6 +375,7 @@ def main():
 
     print(f"[*] evaluating RFR + bagging uncertainty across {len(EVAL_SEEDS)} random seeds ...")
     for seed in EVAL_SEEDS:
+        print(f"[*] evaluating seed {seed} ...")
         seed_rows, artifacts = evaluate_seed(
             X=X,
             y=y,
