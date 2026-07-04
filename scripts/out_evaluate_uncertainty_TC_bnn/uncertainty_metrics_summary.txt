@@ -1,6 +1,6 @@
 Tran-style uncertainty evaluation for fixed-architecture BNN
 ================================================================================
-Data file: /home/wager/repos/PUBLICATION/wip/mag_unc_final/data/curie/DS1.csv
+Data file: /scandium/home/wager/repos/magnetic_uncertainty_diss/data/curie/DS1.csv
 Label: TC
 Representative seed for plots: 123
 Evaluation seeds for reported metrics: [123, 124, 125, 126, 127, 128, 129, 130, 131, 132]

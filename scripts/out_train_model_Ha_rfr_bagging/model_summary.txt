@@ -1,0 +1,43 @@
+Model Summary
+================================================================================
+BaggingRegressor Summary
+********************************************************************************
+Representative seed for plots/model export: 123
+Evaluation seeds for reported metrics: [123, 124, 125, 126, 127, 128, 129, 130, 131, 132]
+Base Estimator: RandomForestRegressor(n_estimators=50, n_jobs=8, random_state=123)
+Number of Bagging Estimators: 100
+Random State: 123
+n_jobs: 8
+Trees per RandomForest: 50
+Max Depth: None
+Max Features: 1.0
+
+Reported metrics are averaged over repeated train/test splits and refits.
+
+Per-seed metrics:
+ seed split  n_samples      MAE      MSE     RMSE       R2
+  123 train       1035 0.232303 0.200746 0.448047 0.970257
+  123  test        444 0.335986 0.253244 0.503234 0.939018
+  124 train       1035 0.223510 0.166676 0.408260 0.973345
+  124  test        444 0.350505 0.350291 0.591854 0.934122
+  125 train       1035 0.229025 0.198964 0.446054 0.964993
+  125  test        444 0.393321 0.936062 0.967503 0.859237
+  126 train       1035 0.220696 0.193334 0.439697 0.965631
+  126  test        444 0.387308 0.516577 0.718733 0.923663
+  127 train       1035 0.212941 0.139471 0.373458 0.978737
+  127  test        444 0.342724 0.267950 0.517639 0.941885
+  128 train       1035 0.235558 0.204598 0.452325 0.968522
+  128  test        444 0.339399 0.271444 0.521003 0.942019
+  129 train       1035 0.217178 0.186219 0.431531 0.966142
+  129  test        444 0.409738 0.689206 0.830184 0.902617
+  130 train       1035 0.221208 0.182240 0.426896 0.967617
+  130  test        444 0.385624 0.645543 0.803457 0.904811
+  131 train       1035 0.226493 0.183150 0.427960 0.970347
+  131  test        444 0.336661 0.282321 0.531339 0.948671
+  132 train       1035 0.225620 0.213943 0.462540 0.964302
+  132  test        444 0.380537 0.470167 0.685687 0.920718
+
+Mean and standard deviation across seeds:
+split  n_samples_mean  MAE_mean  MAE_std  MSE_mean  MSE_std  RMSE_mean  RMSE_std  R2_mean   R2_std
+ test           444.0  0.366180  0.02781  0.468281 0.229736   0.667063  0.160925 0.921676 0.026993
+train          1035.0  0.224453  0.00685  0.186934 0.021390   0.431677  0.025587 0.968989 0.004433
