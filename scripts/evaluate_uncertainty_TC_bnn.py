@@ -331,14 +331,13 @@ def evaluate_seed(X, y, df, seed: int, keep_artifacts: bool = False):
         metrics_row_test['seed'] = seed
         metrics_rows.append(metrics_row_test)
 
-    artifacts = None
+    artifacts = {
+        'y_true_test': y_test_arr,
+        'y_pred_test': y_pred_test,
+        'uncertainty_payloads': uncertainty_payloads,
+    }
     if keep_artifacts:
-        artifacts = {
-            **split_data,
-            'regressor': regressor,
-            'y_pred_test': y_pred_test,
-            'uncertainty_payloads': uncertainty_payloads,
-        }
+        artifacts['regressor'] = regressor
 
     return metrics_rows, artifacts
 
@@ -387,8 +386,8 @@ def write_summary(metrics_by_seed_df: pd.DataFrame, metrics_summary_df: pd.DataF
         '=' * 80,
         f'Data file: {DATA_PATH / CSV_FILE}',
         f'Label: {LABEL}',
-        f'Representative seed for plots: {SEED}',
         f'Evaluation seeds for reported metrics: {EVAL_SEEDS}',
+        'Plots pool test predictions from all evaluation seeds.',
         f'Epochs: {regressor.epochs}',
         f'MC samples: {regressor.n_samples}',
         '',
@@ -417,6 +416,13 @@ def main():
 
     metrics_rows = []
     representative_artifacts = None
+    pooled_y_true = []
+    pooled_y_pred = []
+    pooled_std_by_type = {
+        'total': [],
+        'aleatoric': [],
+        'epistemic': [],
+    }
 
     print(f"[*] evaluating BNN uncertainty across {len(EVAL_SEEDS)} random seeds ...")
     for seed in EVAL_SEEDS:
@@ -428,7 +434,11 @@ def main():
             keep_artifacts=(seed == SEED),
         )
         metrics_rows.extend(seed_rows)
-        if artifacts is not None:
+        pooled_y_true.append(artifacts['y_true_test'])
+        pooled_y_pred.append(artifacts['y_pred_test'])
+        for uncertainty_type, payload in artifacts['uncertainty_payloads'].items():
+            pooled_std_by_type[uncertainty_type].append(payload['test_std'])
+        if seed == SEED:
             representative_artifacts = artifacts
 
     metrics_by_seed_df = pd.DataFrame(metrics_rows)
@@ -443,13 +453,16 @@ def main():
         regressor=representative_artifacts['regressor'],
     )
 
-    for uncertainty_type, payload in representative_artifacts['uncertainty_payloads'].items():
+    pooled_y_true_arr = np.concatenate(pooled_y_true)
+    pooled_y_pred_arr = np.concatenate(pooled_y_pred)
+
+    for uncertainty_type, std_chunks in pooled_std_by_type.items():
         make_uncertainty_figures(
             uncertainty_type=uncertainty_type,
             split_name='test',
-            y_true=representative_artifacts['y_test'].to_numpy(),
-            y_pred=representative_artifacts['y_pred_test'],
-            y_std=payload['test_std'],
+            y_true=pooled_y_true_arr,
+            y_pred=pooled_y_pred_arr,
+            y_std=np.concatenate(std_chunks),
         )
 
     print(f"\nFINISHED UNCERTAINTY EVALUATION. All results saved to {OUT_PATH}\n")

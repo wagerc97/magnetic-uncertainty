@@ -283,14 +283,13 @@ def evaluate_seed(X, y, df, seed: int, keep_artifacts: bool = False):
     metrics_row['seed'] = seed
     metrics_rows = [metrics_row]
 
-    artifacts = None
+    artifacts = {
+        'y_true_test': np.asarray(split_data['y_test'].to_numpy()).flatten(),
+        'y_pred_test': np.asarray(y_pred_test).flatten(),
+        'y_std_test': np.asarray(y_std_test).flatten(),
+    }
     if keep_artifacts:
-        artifacts = {
-            **split_data,
-            'regressor': regressor,
-            'y_pred_test': np.asarray(y_pred_test).flatten(),
-            'y_std_test': np.asarray(y_std_test).flatten(),
-        }
+        artifacts['regressor'] = regressor
 
     return metrics_rows, artifacts
 
@@ -339,8 +338,8 @@ def write_summary(metrics_by_seed_df: pd.DataFrame, metrics_summary_df: pd.DataF
         '=' * 80,
         f'Data file: {DATA_PATH / CSV_FILE}',
         f'Label: {LABEL}',
-        f'Representative seed for plots: {SEED}',
         f'Evaluation seeds for reported metrics: {EVAL_SEEDS}',
+        'Plots pool test predictions from all evaluation seeds.',
         f'Base estimator: {base_estimator}',
         f'Bagging estimators: {bagging_model.n_estimators}',
         f'Stored estimators: {len(bagging_model.estimators_)}',
@@ -370,6 +369,9 @@ def main():
 
     metrics_rows = []
     representative_artifacts = None
+    pooled_y_true = []
+    pooled_y_pred = []
+    pooled_y_std = []
 
     print(f"[*] evaluating RFR + bagging uncertainty across {len(EVAL_SEEDS)} random seeds ...")
     for seed in EVAL_SEEDS:
@@ -381,7 +383,10 @@ def main():
             keep_artifacts=(seed == SEED),
         )
         metrics_rows.extend(seed_rows)
-        if artifacts is not None:
+        pooled_y_true.append(artifacts['y_true_test'])
+        pooled_y_pred.append(artifacts['y_pred_test'])
+        pooled_y_std.append(artifacts['y_std_test'])
+        if seed == SEED:
             representative_artifacts = artifacts
 
     metrics_by_seed_df = pd.DataFrame(metrics_rows)
@@ -398,9 +403,9 @@ def main():
 
     make_uncertainty_figures(
         split_name='test',
-        y_true=representative_artifacts['y_test'].to_numpy(),
-        y_pred=representative_artifacts['y_pred_test'],
-        y_std=representative_artifacts['y_std_test'],
+        y_true=np.concatenate(pooled_y_true),
+        y_pred=np.concatenate(pooled_y_pred),
+        y_std=np.concatenate(pooled_y_std),
     )
 
     print(f"\nFINISHED UNCERTAINTY EVALUATION. All results saved to {OUT_PATH}\n")
