@@ -345,33 +345,33 @@ def evaluate_seed(X, y, df, seed: int, keep_artifacts: bool = False):
 
 
 def summarize_metrics(metrics_by_seed_df: pd.DataFrame) -> pd.DataFrame:
-    return (
-        metrics_by_seed_df
-        .groupby(['uncertainty_type'], as_index=False)
-        .agg(
-            n_samples_mean=('n_samples', 'mean'),
-            MAE_mean=('MAE', 'mean'),
-            MAE_std=('MAE', 'std'),
-            RMSE_mean=('RMSE', 'mean'),
-            RMSE_std=('RMSE', 'std'),
-            MDAE_mean=('MDAE', 'mean'),
-            MDAE_std=('MDAE', 'std'),
-            R2_mean=('R2', 'mean'),
-            R2_std=('R2', 'std'),
-            MACE_mean=('MACE', 'mean'),
-            MACE_std=('MACE', 'std'),
-            RMSCE_mean=('RMSCE', 'mean'),
-            RMSCE_std=('RMSCE', 'std'),
-            miscalibration_area_mean=('miscalibration_area', 'mean'),
-            miscalibration_area_std=('miscalibration_area', 'std'),
-            sharpness_mean=('sharpness', 'mean'),
-            sharpness_std=('sharpness', 'std'),
-            NLL_mean=('NLL', 'mean'),
-            NLL_std=('NLL', 'std'),
-            CRPS_mean=('CRPS', 'mean'),
-            CRPS_std=('CRPS', 'std'),
-        )
-    )
+    summary_rows = []
+    for uncertainty_type, group in metrics_by_seed_df.groupby('uncertainty_type', sort=False):
+        summary_rows.append({
+            'uncertainty_type': uncertainty_type,
+            'n_samples_mean': group['n_samples'].mean(),
+            'MAE_mean': group['MAE'].mean(),
+            'MAE_std': group['MAE'].std(),
+            'RMSE_mean': group['RMSE'].mean(),
+            'RMSE_std': group['RMSE'].std(),
+            'MDAE_mean': group['MDAE'].mean(),
+            'MDAE_std': group['MDAE'].std(),
+            'R2_mean': group['R2'].mean(),
+            'R2_std': group['R2'].std(),
+            'MACE_mean': group['MACE'].mean(),
+            'MACE_std': group['MACE'].std(),
+            'RMSCE_mean': group['RMSCE'].mean(),
+            'RMSCE_std': group['RMSCE'].std(),
+            'miscalibration_area_mean': group['miscalibration_area'].mean(),
+            'miscalibration_area_std': group['miscalibration_area'].std(),
+            'sharpness_mean': group['sharpness'].mean(),
+            'sharpness_std': group['sharpness'].std(),
+            'NLL_mean': group['NLL'].mean(),
+            'NLL_std': group['NLL'].std(),
+            'CRPS_mean': group['CRPS'].mean(),
+            'CRPS_std': group['CRPS'].std(),
+        })
+    return pd.DataFrame(summary_rows)
 
 
 

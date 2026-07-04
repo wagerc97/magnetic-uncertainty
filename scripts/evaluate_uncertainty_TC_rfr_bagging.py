@@ -297,33 +297,31 @@ def evaluate_seed(X, y, df, seed: int, keep_artifacts: bool = False):
 
 
 def summarize_metrics(metrics_by_seed_df: pd.DataFrame) -> pd.DataFrame:
-    return (
-        metrics_by_seed_df
-        .agg(
-            n_samples_mean=('n_samples', 'mean'),
-            MAE_mean=('MAE', 'mean'),
-            MAE_std=('MAE', 'std'),
-            RMSE_mean=('RMSE', 'mean'),
-            RMSE_std=('RMSE', 'std'),
-            MDAE_mean=('MDAE', 'mean'),
-            MDAE_std=('MDAE', 'std'),
-            R2_mean=('R2', 'mean'),
-            R2_std=('R2', 'std'),
-            MACE_mean=('MACE', 'mean'),
-            MACE_std=('MACE', 'std'),
-            RMSCE_mean=('RMSCE', 'mean'),
-            RMSCE_std=('RMSCE', 'std'),
-            miscalibration_area_mean=('miscalibration_area', 'mean'),
-            miscalibration_area_std=('miscalibration_area', 'std'),
-            sharpness_mean=('sharpness', 'mean'),
-            sharpness_std=('sharpness', 'std'),
-            NLL_mean=('NLL', 'mean'),
-            NLL_std=('NLL', 'std'),
-            CRPS_mean=('CRPS', 'mean'),
-            CRPS_std=('CRPS', 'std'),
-        )
-        .T
-    )
+    return pd.DataFrame([
+        {
+            'n_samples_mean': metrics_by_seed_df['n_samples'].mean(),
+            'MAE_mean': metrics_by_seed_df['MAE'].mean(),
+            'MAE_std': metrics_by_seed_df['MAE'].std(),
+            'RMSE_mean': metrics_by_seed_df['RMSE'].mean(),
+            'RMSE_std': metrics_by_seed_df['RMSE'].std(),
+            'MDAE_mean': metrics_by_seed_df['MDAE'].mean(),
+            'MDAE_std': metrics_by_seed_df['MDAE'].std(),
+            'R2_mean': metrics_by_seed_df['R2'].mean(),
+            'R2_std': metrics_by_seed_df['R2'].std(),
+            'MACE_mean': metrics_by_seed_df['MACE'].mean(),
+            'MACE_std': metrics_by_seed_df['MACE'].std(),
+            'RMSCE_mean': metrics_by_seed_df['RMSCE'].mean(),
+            'RMSCE_std': metrics_by_seed_df['RMSCE'].std(),
+            'miscalibration_area_mean': metrics_by_seed_df['miscalibration_area'].mean(),
+            'miscalibration_area_std': metrics_by_seed_df['miscalibration_area'].std(),
+            'sharpness_mean': metrics_by_seed_df['sharpness'].mean(),
+            'sharpness_std': metrics_by_seed_df['sharpness'].std(),
+            'NLL_mean': metrics_by_seed_df['NLL'].mean(),
+            'NLL_std': metrics_by_seed_df['NLL'].std(),
+            'CRPS_mean': metrics_by_seed_df['CRPS'].mean(),
+            'CRPS_std': metrics_by_seed_df['CRPS'].std(),
+        }
+    ])
 
 
 
