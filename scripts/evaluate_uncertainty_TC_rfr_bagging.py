@@ -322,7 +322,6 @@ def summarize_metrics(metrics_by_seed_df: pd.DataFrame) -> pd.DataFrame:
             CRPS_mean=('CRPS', 'mean'),
             CRPS_std=('CRPS', 'std'),
         )
-        .to_frame()
         .T
     )
 
