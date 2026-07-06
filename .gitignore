@@ -169,3 +169,5 @@ cython_debug/
 
 # working files from keras tuner 
 */keras_tuner/*
+
+*.zip
