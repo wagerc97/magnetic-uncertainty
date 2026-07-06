@@ -1,0 +1,43 @@
+Model Summary
+================================================================================
+GaussianProcessRegressor Summary
+********************************************************************************
+Representative seed for plots/model export: 123
+Evaluation seeds for reported metrics: [123, 124, 125, 126, 127, 128, 129, 130, 131, 132]
+Initial Kernel: 1**2 * Matern(length_scale=1, nu=1.5) + WhiteKernel(noise_level=1)
+Optimized Kernel: 9.61**2 * Matern(length_scale=27.1, nu=1.5) + WhiteKernel(noise_level=0.0188)
+Log-Marginal Likelihood: 159.456
+Optimizer: fmin_l_bfgs_b
+Alpha: 1e-10
+Normalize_y: True
+Number of restarts: 0
+
+Reported metrics are averaged over repeated train/test splits and refits.
+
+Per-seed metrics:
+ seed split  n_samples      MAE      MSE     RMSE       R2
+  123 train       1035 0.184353 0.088607 0.297670 0.986872
+  123  test        444 0.265730 0.143998 0.379470 0.965325
+  124 train       1035 0.180518 0.081414 0.285331 0.986980
+  124  test        444 0.240695 0.142767 0.377845 0.973150
+  125 train       1035 0.191165 0.093175 0.305245 0.983606
+  125  test        444 0.259791 0.191383 0.437473 0.971220
+  126 train       1035 0.182854 0.084635 0.290921 0.984954
+  126  test        444 0.279392 0.172239 0.415017 0.974547
+  127 train       1035 0.189401 0.091872 0.303105 0.985993
+  127  test        444 0.271663 0.171822 0.414515 0.962734
+  128 train       1035 0.196495 0.096851 0.311209 0.985099
+  128  test        444 0.245146 0.135006 0.367431 0.971162
+  129 train       1035 0.170236 0.072339 0.268958 0.986847
+  129  test        444 0.294859 0.254160 0.504143 0.964088
+  130 train       1035 0.175307 0.075933 0.275559 0.986507
+  130  test        444 0.287841 0.220067 0.469113 0.967550
+  131 train       1035 0.181814 0.080370 0.283495 0.986988
+  131  test        444 0.241705 0.150300 0.387685 0.972674
+  132 train       1035 0.174170 0.074830 0.273551 0.987514
+  132  test        444 0.263174 0.179828 0.424062 0.969676
+
+Mean and standard deviation across seeds:
+split  n_samples_mean  MAE_mean  MAE_std  MSE_mean  MSE_std  RMSE_mean  RMSE_std  R2_mean   R2_std
+ test           444.0  0.265000 0.018925  0.176157 0.037717   0.417675  0.043515 0.969213 0.004084
+train          1035.0  0.182631 0.008151  0.084003 0.008419   0.289504  0.014519 0.986136 0.001221

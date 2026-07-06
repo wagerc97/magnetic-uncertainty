@@ -1,0 +1,30 @@
+Tran-style uncertainty evaluation for GPR
+================================================================================
+Data file: /home/wager/slurm_182096/data/curie/DS1.csv
+Label: TC
+Evaluation seeds for reported metrics: [123, 124, 125, 126, 127, 128, 129, 130, 131, 132]
+Plots pool test predictions from all evaluation seeds.
+Representative fitted kernel (optimized): 0.882**2 * Matern(length_scale=3.9, nu=1.5) + WhiteKernel(noise_level=0.0738)
+
+Per-seed metrics:
+split  n_samples        MAE       RMSE      MDAE       R2     MACE    RMSCE  miscalibration_area  sharpness      NLL      CRPS  seed
+ test        768  96.577943 140.457003 61.150805 0.739587 0.099652 0.111171             0.100647 157.749426 6.317608 73.087447   123
+ test        768  96.057622 138.770756 63.665362 0.740570 0.099334 0.112246             0.100330 157.582240 6.334537 73.209419   124
+ test        768  98.934792 144.276948 62.783806 0.749218 0.089092 0.099994             0.089985 157.239289 6.323411 74.386302   125
+ test        768  98.683055 142.975632 63.242445 0.746428 0.099053 0.110695             0.100047 160.855688 6.336920 74.631874   126
+ test        768  93.313060 132.823058 60.456563 0.766726 0.107186 0.121490             0.108269 158.833122 6.235172 69.958360   127
+ test        768  93.835809 138.906192 58.828125 0.755830 0.110290 0.123076             0.111395 160.366556 6.309632 71.541931   128
+ test        768 101.365518 147.621515 68.422271 0.708187 0.081415 0.092648             0.082223 156.359530 6.375064 76.330023   129
+ test        768 102.725876 156.423137 58.986480 0.695229 0.100893 0.112162             0.101898 160.820551 6.410541 78.447155   130
+ test        768 100.671407 146.221617 61.285395 0.743540 0.087815 0.100289             0.088698 157.202078 6.389728 75.109389   131
+ test        768  93.853717 133.009792 58.687545 0.782830 0.112461 0.124321             0.113597 164.036310 6.236162 69.806889   132
+
+Mean and standard deviation across seeds:
+ n_samples_mean  MAE_mean  MAE_std  RMSE_mean  RMSE_std  MDAE_mean  MDAE_std  R2_mean   R2_std  MACE_mean  MACE_std  RMSCE_mean  RMSCE_std  miscalibration_area_mean  miscalibration_area_std  sharpness_mean  sharpness_std  NLL_mean  NLL_std  CRPS_mean  CRPS_std
+          768.0  97.60188 3.380452 142.148565  7.077245   61.75088  2.968068 0.742814 0.025552   0.098719  0.010064    0.110809   0.010586                  0.099709                 0.010168      159.104479       2.375506  6.326878 0.058182  73.650879  2.732185
+
+Metrics follow docs/uncertainty_evaluation.pdf:
+- accuracy: MAE, RMSE, MDAE, R2
+- calibration: MACE, RMSCE, miscalibration area
+- sharpness: expected predictive std
+- scoring rules: NLL, CRPS
