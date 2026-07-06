@@ -283,6 +283,8 @@ def main():
     print(f"Log-Marginal-Likelihood: {regressor.log_marginal_likelihood(regressor.kernel_.theta)}")
     print()
 
+    joblib.dump(regressor, OUT_PATH / "model.joblib")
+
     from src.evaluation.residual_styled import plot_cv_predictions_hexbin, plot_predictions_color_std
 
     title = f"Parity plot train-set ({SYMBOL})"
