@@ -31,19 +31,12 @@ from sklearn.ensemble import BaggingRegressor, RandomForestRegressor
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
+import uncertainty_toolbox as uct
 
 _root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 if _root not in sys.path:
     sys.path.insert(0, _root)
 print(f"Project root added to python path:\n{_root}")
-
-try:
-    import uncertainty_toolbox as uct
-except ImportError as exc:
-    raise ImportError(
-        "This script requires the `uncertainty-toolbox` package. "
-        "Install the project environment from environment.yml first."
-    ) from exc
 
 print('Imports OK')
 

@@ -37,6 +37,7 @@ from keras.layers import Dense, Dropout, Input
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
+import uncertainty_toolbox as uct
 
 _root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 if _root not in sys.path:
@@ -44,14 +45,6 @@ if _root not in sys.path:
 print(f"Project root added to python path:\n{_root}")
 
 from src.ml.bnn_base import BnnBase, gaussian_nll
-
-try:
-    import uncertainty_toolbox as uct
-except ImportError as exc:
-    raise ImportError(
-        "This script requires the `uncertainty-toolbox` package. "
-        "Install the project environment from environment.yml first."
-    ) from exc
 
 print('Imports OK')
 
@@ -265,6 +258,7 @@ def make_uncertainty_figures(
     y_pred: np.ndarray,
     y_std: np.ndarray,
 ):
+    """Make calibration curve, sharpness, and residuals vs predicted std plots for a given uncertainty type."""
     label = f"BNN {uncertainty_type} ({split_name})"
 
     fig1, ax1 = plt.subplots(figsize=(5, 5))
@@ -296,6 +290,7 @@ def make_uncertainty_figures(
 
 
 def evaluate_seed(X, y, df, seed: int, keep_artifacts: bool = False):
+    """Evaluate the model for a given seed."""
     set_all_seeds(seed)
 
     split_data = split_and_scale_data(X=X, y=y, df=df, seed=seed)
@@ -344,6 +339,8 @@ def evaluate_seed(X, y, df, seed: int, keep_artifacts: bool = False):
 
 
 def summarize_metrics(metrics_by_seed_df: pd.DataFrame) -> pd.DataFrame:
+    """Summarize metrics across seeds for each uncertainty type.
+    Returns a DataFrame with mean and std for each metric."""
     summary_rows = []
     for uncertainty_type, group in metrics_by_seed_df.groupby('uncertainty_type', sort=False):
         summary_rows.append({
@@ -375,6 +372,7 @@ def summarize_metrics(metrics_by_seed_df: pd.DataFrame) -> pd.DataFrame:
 
 
 def write_summary(metrics_by_seed_df: pd.DataFrame, metrics_summary_df: pd.DataFrame, regressor: BnnBase):
+    """Write metrics summary to CSV and TXT files."""
     csv_by_seed_path = OUT_PATH / 'uncertainty_metrics_by_seed.csv'
     csv_summary_path = OUT_PATH / 'uncertainty_metrics_summary.csv'
     txt_path = OUT_PATH / 'uncertainty_metrics_summary.txt'
